@@ -53,6 +53,11 @@ def init_db():
 # Call the function to initialize the database when the app starts
 init_db()
 
+# A simple route to check if the backend is running
+@app.route('/', methods=['GET'])
+def home():
+    return "The backend server is running!"
+
 # Route to handle form submission
 @app.route('/submit-survey', methods=['POST'])
 def submit_survey():
@@ -96,7 +101,6 @@ def submit_survey():
         print(f"General error: {e}")
         return jsonify({'success': False, 'message': f'An unexpected error occurred: {e}'}), 500
 
-
 # New route to view the data
 @app.route('/view-data', methods=['GET'])
 def view_data():
@@ -113,4 +117,3 @@ def view_data():
     except Exception as e:
         print(f"General error: {e}")
         return jsonify({'success': False, 'message': f'An unexpected error occurred: {e}'}), 500
-
