@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leftover Lifeline</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-Fo3rlrZj/k7pX7TqU8qU/pQ5yFz2yI4KjYn7u3f+3G6/U+V4I5e5C8R5PzB+Q5sBw7x5I/S8L3R4p+K9V3Rz8A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-color: #0d1117;
+            color: #e6e6e6;
+        }
+        .gradient-bg {
+            background: linear-gradient(-45deg, #1f2732, #111a24, #0d1117, #1f2732);
+            background-size: 400% 400%;
+            animation: gradient-shift 15s ease infinite;
+        }
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .tab-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .tab-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card-content {
+            transition: transform 0.3s ease-in-out;
+        }
+        .shine-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        .shine-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: skewX(-20deg);
+            transition: left 0.6s ease-out;
+        }
+        .shine-effect:hover::before {
+            left: 100%;
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: fadeInLeft 1s ease-out forwards;
+        }
+        @keyframes fadeInLeft {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            animation: fadeInRight 1s ease-out forwards;
+        }
+        @keyframes fadeInRight {
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .hidden {
+            display: none !important;
+        }
+        .back-button {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 10;
+        }
+        .content-section {
+            display: none;
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+        .content-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        }
+        .mentor-photo {
+            width: 150px;
+            height: 150px;
+        }
+        
+        /* Splash Screen specific styles */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0d1117;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 1s ease-out;
+        }
+        #splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .logo-pulse {
+            animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg flex flex-col p-4 relative">
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <img src="https://i.ibb.co/0y9dXmN2/logo.png" alt="Leftover Lifeline Logo" class="h-40 w-40 logo-pulse">
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="main-content" class="hidden">
+        <!-- Top-Left Logo and Title -->
+        <a href="#" onclick="showSection('home')" class="back-button flex items-center space-x-2 p-2 rounded-full hover:bg-gray-800 transition-colors duration-300">
+            <img src="https://i.ibb.co/0y9dXmN2/logo.png" alt="Leftover Lifeline Logo" class="h-10 w-10 rounded-full">
+            <span class="font-bold text-lg md:text-xl text-white">Leftover Lifeline</span>
+        </a>
+
+        <!-- Main Landing Page -->
+        <div id="home" class="container max-w-4xl mx-auto py-12 px-6 content-section active">
+            <header class="text-center mb-16 pt-12 flex flex-col items-center">
+                <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-2 text-yellow-300 flex items-center">
+                    <img src="https://i.ibb.co/0y9dXmN2/logo.png" alt="Leftover Lifeline Logo" class="h-14 w-14 rounded-full mr-4">
+                    Leftover Lifeline
+                </h1>
+                <p class="text-lg md:text-xl text-white max-w-2xl mx-auto">
+                    An extra meal for you isn't just a leftover—it may be a lifeline for someone else.
+                </p>
+            </header>
+    
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-24">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm tab-card" onclick="showSection('awareness-management')">
+                    <div class="card-content text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-cyan-300">Awareness & Management</h3>
+                        <p class="text-gray-400">
+                            Learn how to reduce and manage food waste effectively.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm tab-card" onclick="showSection('survey-form')">
+                    <div class="card-content text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-emerald-300">Take a Survey</h3>
+                        <p class="text-gray-400">
+                            Contribute to our research on food waste.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm tab-card" onclick="showSection('our-study')">
+                    <div class="card-content text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-purple-300">Our Study</h3>
+                        <p class="text-gray-400">
+                            Explore our research and survey data.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm tab-card" onclick="showSection('meet-the-team')">
+                    <div class="card-content text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-yellow-300">Group Members & Mentor </h3>
+                        <p class="text-gray-400">
+                            Learn about the dedicated individuals behind this project.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm tab-card lg:col-span-2" onclick="openMaps()">
+                    <div class="card-content text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-rose-300">Find Nearby Food Waste Industry</h3>
+                        <p class="text-gray-400">
+                            Locate food management industries and composting centers in your area.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    
+        <!-- Section: Awareness & Management -->
+        <div id="awareness-management" class="container max-w-4xl mx-auto py-12 px-6 content-section">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-white">Awareness & Management</h2>
+            
+            <div class="space-y-12">
+                <!-- The 3 R's -->
+                <section class="bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div>
+                            <i class="fas fa-arrow-down text-4xl text-cyan-400 mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Reduce</h3>
+                            <p class="text-gray-400">The first and most important step. Plan your meals, make shopping lists, and store food properly to prevent spoilage and overbuying.</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-redo-alt text-4xl text-emerald-400 mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Reuse</h3>
+                            <p class="text-gray-400">Turn leftovers into new meals or use food scraps to create vegetable broth. Get creative and find new purposes for excess food.</p>
+                        </div>
+                        <div>
+                            <i class="fas fa-recycle text-4xl text-purple-400 mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">Recycle</h3>
+                            <p class="text-gray-400">For what can't be eaten, composting is key. Learn how to turn food waste into nutrient-rich soil for your garden.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Why This Matters -->
+                <section>
+                    <h2 class="text-4xl font-extrabold text-center mb-12 text-white">Why This Matters</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm">
+                            <h3 class="text-2xl font-bold mb-3 text-red-400">Environmental Impact</h3>
+                            <p class="text-gray-400">
+                                When food is thrown away, it often ends up in landfills. As it decomposes, it releases methane, a greenhouse gas that is far more potent than carbon dioxide. Reducing food waste is a powerful way to combat climate change.
+                            </p>
+                        </div>
+                        <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm">
+                            <h3 class="text-2xl font-bold mb-3 text-green-400">A Valuable Resource</h3>
+                            <p class="text-gray-400">
+                                Food waste isn't garbage—it's a valuable resource. Through processes like anaerobic digestion, it can be converted into biogas to generate clean energy and a nutrient-rich digestate that acts as a powerful fertilizer, enriching our soil.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+    
+                <!-- Project Objectives -->
+                <section>
+                    <h2 class="text-4xl font-extrabold text-center mb-12">Project Objectives</h2>
+                    <div class="bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm">
+                        <ul class="space-y-6 text-gray-400 text-lg">
+                            <li class="flex items-center space-x-4">
+                                <span class="text-cyan-400 text-2xl">✓</span>
+                                <span>
+                                      Raise Awareness: To educate the public on the environmental impact of food waste and the simple steps they can take to reduce it at home and in their communities.
+                                </span>
+                            </li>
+                            <li class="flex items-center space-x-4">
+                                <span class="text-emerald-400 text-2xl">✓</span>
+                                <span>
+                                      Promote Resource Conversion: To inform people about how food waste can be transformed into valuable resources, such as biogas for clean energy and fertilizers to enrich agricultural soil.
+                                </span>
+                            </li>
+                            <li class="flex items-center space-x-4">
+                                <span class="text-purple-400 text-2xl">✓</span>
+                                <span>
+                                      Research and Implement: To research and identify the most efficient and scalable methods for food waste management, advocating for their adoption on a wider scale.
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+    
+                <!-- More Ways to Help with Zig-Zag Design -->
+                <section>
+                    <h2 class="text-4xl font-extrabold text-center mb-12">More Ways to Help</h2>
+                    <!-- Section 1: Smart Shopping -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-16">
+                        <div class="w-full md:w-1/2 fade-in-left" style="animation-delay: 1.4s;">
+                            <img src="https://i.ibb.co/JjXvf4FH/meal-planning.jpg" class="rounded-3xl shadow-lg" alt="Image of a person organizing a shopping list for meal planning">
+                        </div>
+                        <div class="w-full md:w-1/2 fade-in-right" style="animation-delay: 1.6s;">
+                            <h3 class="text-3xl font-bold mb-4 text-white">Shop Smarter, Waste Less</h3>
+                            <p class="text-gray-400 text-lg">
+                                Creating a meal plan and a detailed shopping list before you go to the store is a powerful way to reduce waste. It helps you buy only what you need, saving money and preventing food from going bad.
+                            </p>
+                        </div>
+                    </div>
+    
+                    <!-- Section 2: Proper Storage -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-16">
+                        <div class="w-full md:w-1/2 order-last md:order-first fade-in-right" style="animation-delay: 1.8s;">
+                            <h3 class="text-3xl font-bold mb-4 text-white">Store Food the Right Way</h3>
+                            <p class="text-gray-400 text-lg">
+                                Proper storage can extend the life of your food significantly. Learn which items belong in the fridge, pantry, or freezer to keep them fresh for longer and avoid unnecessary spoilage.
+                            </p>
+                        </div>
+                        <div class="w-full md:w-1/2 fade-in-left" style="animation-delay: 2s;">
+                            <img src="https://i.ibb.co/zH8jRzzQ/Fridge-2.jpg" class="rounded-3xl shadow-lg" alt="Image of a well-organized refrigerator with fresh produce">
+                        </div>
+                    </div>
+    
+                    <!-- Section 3: Composting at Home -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-16">
+                        <div class="w-full md:w-1/2 fade-in-left" style="animation-delay: 2.2s;">
+                            <img src="https://i.ibb.co/21MktWT0/compost.jpg" class="rounded-3xl shadow-lg" alt="Image of a small home composting bin">
+                        </div>
+                        <div class="w-full md:w-1/2 fade-in-right" style="animation-delay: 2.4s;">
+                            <h3 class="text-3xl font-bold mb-4 text-white">Make a Difference at Home</h3>
+                            <p class="text-gray-400 text-lg">
+                                Composting is an easy and effective way to manage food waste. By turning scraps into nutrient-rich soil, you help the environment and can even create a healthy garden.
+                            </p>
+                        </div>
+                    </div>
+    
+                    <!-- Section 4: Donating Excess Food -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-16">
+                        <div class="w-full md:w-1/2 order-last md:order-first fade-in-right" style="animation-delay: 2.6s;">
+                            <h3 class="text-3xl font-bold mb-4 text-white">Donate Excess Food</h3>
+                            <p class="text-gray-400 text-lg">
+                                If you have surplus food that is still good, consider donating it to local food banks, shelters, or charities. This helps those in need and prevents food from being wasted.
+                            </p>
+                        </div>
+                        <div class="w-full md:w-1/2 fade-in-left" style="animation-delay: 2.8s;">
+                            <img src="https://i.ibb.co/WvSKZ4Yy/donation.jpg" class="rounded-3xl shadow-lg" alt="Image of a person donating food">
+                        </div>
+                    </div>
+    
+                    <!-- Section 5: Understanding Food Labels -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-16">
+                        <div class="w-full md:w-1/2 fade-in-left" style="animation-delay: 3s;">
+                            <img src="https://i.ibb.co/mCHnBYfW/expiry.jpg" class="rounded-3xl shadow-lg" alt="Image of a food label with dates">
+                        </div>
+                        <div class="w-full md:w-1/2 fade-in-right" style="animation-delay: 3.2s;">
+                            <h3 class="text-3xl font-bold mb-4 text-white">Know Your Dates</h3>
+                            <p class="text-gray-400 text-lg">
+                                Many people confuse "best before" and "use by" dates. "Best before" refers to quality, not safety. Learning the difference can save you from throwing away perfectly edible food.
+                            </p>
+                        </div>
+                    </div>
+    
+                    <!-- Section 6: Community Involvement -->
+                    <div class="flex flex-col md:flex-row items-center gap-8 mb-16">
+                        <div class="w-full md:w-1/2 order-last md:order-first fade-in-right" style="animation-delay: 3.4s;">
+                            <h3 class="text-3xl font-bold mb-4 text-white">Join the Community Effort</h3>
+                            <p class="text-gray-400 text-lg">
+                                Look for local food sharing apps, community gardens, or food rescue programs. Getting involved with your community can amplify your impact and help create a more sustainable food system.
+                            </p>
+                        </div>
+                        <div class="w-full md:w-1/2 fade-in-left" style="animation-delay: 3.6s;">
+                            <img src="https://i.ibb.co/xtLnByc7/rescue.jpg" class="rounded-3xl shadow-lg" alt="Image of a community garden or food collective">
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <!-- Back to Home Button -->
+            <div class="text-center mt-12">
+                <button onclick="showSection('home')" class="px-8 py-3 bg-gray-700 text-white font-bold rounded-full shadow-lg hover:bg-gray-600 transition-colors duration-300">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    
+        <!-- Section: Survey Form -->
+        <div id="survey-form" class="container max-w-4xl mx-auto py-12 px-6 content-section">
+            <h2 class="text-4xl font-extrabold text-center mb-8 text-white">Food Waste Survey</h2>
+            <div class="bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm">
+                <form id="survey-form-content" class="space-y-6">
+                    <!-- Common Questions -->
+                    <div>
+                        <label for="name_or_firm" class="block text-gray-300 mb-2">What is your name or your firm's name?</label>
+                        <input type="text" id="name_or_firm" name="name_or_firm" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                    </div>
+                    <div>
+                        <label for="age" class="block text-gray-300 mb-2">What is your age?</label>
+                        <input type="number" id="age" name="age" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500" required>
+                    </div>
+                    
+                    <!-- Source of Food Waste -->
+                    <div>
+                        <label for="source_of_waste" class="block text-gray-300 mb-2">Which of the following best describes your main source of food waste?</label>
+                        <select id="source_of_waste" name="source_of_waste" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500" required onchange="showQuestions(this.value)">
+                            <option value="">--Select an option--</option>
+                            <option value="home">Home</option>
+                            <option value="hotel">Hotel or Restaurant</option>
+                            <option value="industry">Food Industry / Factory</option>
+                            <option value="farm">Farm</option>
+                            <option value="vendor">Vegetable Vendor</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+    
+                    <!-- Sections for different user types, initially hidden -->
+                    <div id="home-questions" class="source-questions hidden">
+                        <h3 class="text-xl font-bold mb-4 text-gray-200">Questions for Homes</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="home_waste_per_week" class="block text-gray-300">How much food do you waste per week? (in grams)</label>
+                                <input type="number" id="home_waste_per_week" name="home_waste_per_week" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="home_types_of_waste" class="block text-gray-300">What types of food do you waste most frequently?</label>
+                                <input type="text" id="home_types_of_waste" name="home_types_of_waste" placeholder="e.g., forgotten leftovers, spoilage" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="home_compost_aware" class="block text-gray-300">Are you aware of composting?</label>
+                                <select id="home_compost_aware" name="home_compost_aware" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">--Select--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="home_pay_for_collection" class="block text-gray-300">Would you be willing to pay a small fee for a food waste collection service?</label>
+                                <select id="home_pay_for_collection" name="home_pay_for_collection" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">--Select--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="home_tools_needed" class="block text-gray-300">What kind of information or tools would best help you reduce your food waste?</label>
+                                <input type="text" id="home_tools_needed" name="home_tools_needed" placeholder="e.g., meal planning apps, recipes for leftovers" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div id="hotel-questions" class="source-questions hidden">
+                        <h3 class="text-xl font-bold mb-4 text-gray-200">Questions for Hotels/Restaurants</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="hotel_waste_per_day" class="block text-gray-300">On average, how much food waste does your establishment generate per day? (in kilograms)</label>
+                                <input type="number" id="hotel_waste_per_day" name="hotel_waste_per_day" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="hotel_types_of_waste" class="block text-gray-300">What are the main types of food waste generated in your kitchen?</label>
+                                <input type="text" id="hotel_types_of_waste" name="hotel_types_of_waste" placeholder="e.g., kitchen scraps, plate leftovers" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="hotel_monitor_system" class="block text-gray-300">Do you have a system in place to monitor and reduce food waste?</label>
+                                <select id="hotel_monitor_system" name="hotel_monitor_system" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">--Select--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="hotel_donate_food" class="block text-gray-300">Does your establishment donate excess edible food to charities or food banks?</label>
+                                <select id="hotel_donate_food" name="hotel_donate_food" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">--Select--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="hotel_challenges" class="block text-gray-300">What are the biggest challenges you face in managing food waste?</label>
+                                <input type="text" id="hotel_challenges" name="hotel_challenges" placeholder="e.g., lack of resources, cost of disposal" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div id="industry-questions" class="source-questions hidden">
+                        <h3 class="text-xl font-bold mb-4 text-gray-200">Questions for Food Industry</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="industry_waste_per_day" class="block text-gray-300">How much food waste is generated per day in your production facility? (in kilograms)</label>
+                                <input type="number" id="industry_waste_per_day" name="industry_waste_per_day" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="industry_stage_of_waste" class="block text-gray-300">At what stage of production does most of your food waste occur?</label>
+                                <input type="text" id="industry_stage_of_waste" name="industry_stage_of_waste" placeholder="e.g., processing, packaging" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="industry_types_of_waste" class="block text-gray-300">What are the main types of food waste from your facility?</label>
+                                <input type="text" id="industry_types_of_waste" name="industry_types_of_waste" placeholder="e.g., trimmings, off-spec products" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="industry_current_methods" class="block text-gray-300">What are your current food waste management methods?</label>
+                                <input type="text" id="industry_current_methods" name="industry_current_methods" placeholder="e.g., landfill, animal feed, composting" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="industry_reduction_steps" class="block text-gray-300">What steps have you taken to reduce food waste in your operations?</label>
+                                <input type="text" id="industry_reduction_steps" name="industry_reduction_steps" placeholder="e.g., process optimization, employee training" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div id="farm-questions" class="source-questions hidden">
+                        <h3 class="text-xl font-bold mb-4 text-gray-200">Questions for Farms</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="farm_percentage_waste" class="block text-gray-300">What percentage of your crops or livestock products are considered food loss before reaching the market?</label>
+                                <input type="number" id="farm_percentage_waste" name="farm_percentage_waste" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="farm_causes_of_waste" class="block text-gray-300">What are the primary causes of food waste on your farm?</label>
+                                <input type="text" id="farm_causes_of_waste" name="farm_causes_of_waste" placeholder="e.g., weather damage, pest infestation" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="farm_unharvested_food" class="block text-gray-300">What happens to the food that is not sold or harvested?</label>
+                                <input type="text" id="farm_unharvested_food" name="farm_unharvested_food" placeholder="e.g., left in the field, used for animal feed" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="farm_aware_of_initiatives" class="block text-gray-300">Are you aware of any initiatives or programs that help farmers manage food loss?</label>
+                                <select id="farm_aware_of_initiatives" name="farm_aware_of_initiatives" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">--Select--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="farm_support_needed" class="block text-gray-300">What support would be most helpful for you to reduce food loss on your farm?</label>
+                                <input type="text" id="farm_support_needed" name="farm_support_needed" placeholder="e.g., access to better storage, market connections" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="vendor-questions" class="source-questions hidden">
+                        <h3 class="text-xl font-bold mb-4 text-gray-200">Questions for Vegetable Vendors</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="vendor_waste_per_day" class="block text-gray-300">How much of your produce is wasted on a daily or weekly basis? (in kilograms)</label>
+                                <input type="number" id="vendor_waste_per_day" name="vendor_waste_per_day" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="vendor_reasons_for_waste" class="block text-gray-300">What are the main reasons for food waste?</label>
+                                <input type="text" id="vendor_reasons_for_waste" name="vendor_reasons_for_waste" placeholder="e.g., spoilage, cosmetic imperfections, unsold stock" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="vendor_management_methods" class="block text-gray-300">What methods do you use to manage unsold or spoiled produce?</label>
+                                <input type="text" id="vendor_management_methods" name="vendor_management_methods" placeholder="e.g., discounted sales, composting" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                            <div>
+                                <label for="vendor_interested_in_service" class="block text-gray-300">Would you be interested in a service that collects and repurposes your unsold produce?</label>
+                                <select id="vendor_interested_in_service" name="vendor_interested_in_service" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="">--Select--</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="vendor_support_needed" class="block text-gray-300">Do you receive any education or support on how to minimize food waste?</label>
+                                <input type="text" id="vendor_support_needed" name="vendor_support_needed" placeholder="e.g., information on storage, waste reduction tips" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div id="other-questions" class="source-questions hidden">
+                        <h3 class="text-xl font-bold mb-4 text-gray-200">Questions for Other</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="other_description" class="block text-gray-300">Please describe your primary source of food waste and the challenges you face:</label>
+                                <textarea id="other_description" name="other_description" rows="4" class="w-full px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-8">
+                        <button type="submit" class="w-full md:w-auto px-8 py-3 bg-cyan-600 text-white font-bold rounded-full shadow-lg hover:bg-cyan-500 transition-colors duration-300">
+                            Submit Survey
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- Back to Home Button -->
+            <div class="text-center mt-12">
+                <button onclick="showSection('home')" class="px-8 py-3 bg-gray-700 text-white font-bold rounded-full shadow-lg hover:bg-gray-600 transition-colors duration-300">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    
+        <!-- Section: Our Study -->
+        <div id="our-study" class="container max-w-4xl mx-auto py-12 px-6 content-section">
+            <h2 class="text-4xl font-extrabold text-center mb-8 text-white">Our Study</h2>
+            <div class="bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm text-center">
+                <p class="text-lg md:text-xl text-gray-300">
+                    <span class="text-yellow-400 font-bold">Yet to be uploaded soon....</span>
+                    <br>
+                    Please check back later for the results of our research and survey data.
+                </p>
+            </div>
+            <!-- Back to Home Button -->
+            <div class="text-center mt-12">
+                <button onclick="showSection('home')" class="px-8 py-3 bg-gray-700 text-white font-bold rounded-full shadow-lg hover:bg-gray-600 transition-colors duration-300">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    
+        <!-- Section: Meet the Team -->
+        <div id="meet-the-team" class="container max-w-4xl mx-auto py-12 px-6 content-section">
+            <h2 class="text-4xl font-extrabold text-center mb-4 text-white">Meet Our Team & Mentor</h2>
+            <p class="text-center text-lg md:text-xl text-gray-300 mb-12">
+                Together we innovate, together we grow.
+            </p>
+    
+            <!-- Team Members -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm text-center flex flex-col items-center shine-effect">
+                    <img src="https://i.ibb.co/nMwWQB38/soham.jpg" alt="Soham Sagar" class="profile-photo rounded-full mb-4 border-2 border-cyan-400">
+                    <h3 class="text-2xl font-bold text-cyan-300">Soham Sagar</h3>
+                    <p class="text-gray-400 italic mt-2">"Sustainability begins with empathy… every choice can matter..."</p>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm text-center flex flex-col items-center shine-effect">
+                    <img src="https://i.ibb.co/27GSDwtg/om2.jpg" alt="Om Patil" class="profile-photo rounded-full mb-4 border-2 border-cyan-400">
+                    <h3 class="text-2xl font-bold text-cyan-300">Om Patil</h3>
+                    <p class="text-gray-400 italic mt-2">"Resources are precious, use them wisely or risk losing their worth."</p>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm text-center flex flex-col items-center shine-effect">
+                    <img src="https://i.ibb.co/fzYfWcZy/kaustubh.jpg" alt="Kaustubh Dongare" class="profile-photo rounded-full mb-4 border-2 border-cyan-400">
+                    <h3 class="text-2xl font-bold text-cyan-300">Kaustubh Dongare</h3>
+                    <p class="text-gray-400 italic mt-2">"Wasted food is wasted effort; every portion counts."</p>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm text-center flex flex-col items-center shine-effect">
+                    <img src="https://i.ibb.co/DfM0vzSD/purav2.jpg" alt="Purav Mandage" class="profile-photo rounded-full mb-4 border-2 border-cyan-400">
+                    <h3 class="text-2xl font-bold text-cyan-300">Purav Mandage</h3>
+                    <p class="text-gray-400 italic mt-2">"Innovation thrives when we respect nature’s limits."</p>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm text-center flex flex-col items-center shine-effect">
+                    <img src="https://i.ibb.co/8nCR8d0X/shreyas.jpg" alt="Shreyas Bhaganagre" class="profile-photo rounded-full mb-4 border-2 border-cyan-400">
+                    <h3 class="text-2xl font-bold text-cyan-300">Shreyas Bhaganagre</h3>
+                    <p class="text-gray-400 italic mt-2">"Sharing is caring; what we save together can nourish many."</p>
+                </div>
+                <div class="bg-gray-800 bg-opacity-60 p-6 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm text-center flex flex-col items-center shine-effect">
+                    <img src="https://i.ibb.co/gZTT6CRF/pritam.jpg" alt="Pritam Kolage" class="profile-photo rounded-full mb-4 border-2 border-cyan-400">
+                    <h3 class="text-2xl font-bold text-cyan-300">Pritam Kolage</h3>
+                    <p class="text-gray-400 italic mt-2">"Every bite you leave behind… could have filled someone’s empty plate."</p>
+                </div>
+            </div>
+    
+            <!-- Mentor -->
+            <div class="bg-gray-800 bg-opacity-60 p-8 rounded-3xl shadow-lg border border-gray-700 backdrop-blur-sm text-center flex flex-col lg:flex-row items-center justify-center shine-effect">
+                <div class="flex-shrink-0 mb-6 lg:mb-0 lg:mr-8">
+                    <img src="https://placehold.co/150x150/111a24/e6e6e6?text=Mentor" alt="Dr. Meena Pandey" class="mentor-photo rounded-full border-2 border-purple-400">
+                </div>
+                <div class="text-center lg:text-left">
+                    <h3 class="text-3xl font-bold text-purple-300 mb-2">Dr. Meena Pandey</h3>
+                    <p class="text-gray-400">
+                        Dr. Meena Pandey is an Assistant Professor at DY Patil International University (DYPIU). She specializes in Environmental Studies, Climate Change, and Sustainability, inspiring students to think critically about global challenges. With her guidance, learners gain knowledge as well as the vision to contribute toward a sustainable and responsible future.
+                    </p>
+                </div>
+            </div>
+            <!-- Back to Home Button -->
+            <div class="text-center mt-12">
+                <button onclick="showSection('home')" class="px-8 py-3 bg-gray-700 text-white font-bold rounded-full shadow-lg hover:bg-gray-600 transition-colors duration-300">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+    
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 mt-16 p-4 border-t border-gray-700">
+            <div class="flex items-center justify-center mb-4 space-x-4">
+                <span class="text-lg">Passion for science, purpose for society</span>
+            </div>
+            <div class="flex items-center justify-center mb-2 space-x-2">
+                <i class="fas fa-envelope text-lg text-gray-400"></i>
+                <a href="mailto:leftoverlifeline06@gmail.com" class="text-gray-400 hover:text-white transition-colors duration-300">leftoverlifeline06@gmail.com</a>
+            </div>
+            <p class="text-sm">Copyright &copy; Leftover Lifeline</p>
+        </footer>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            const splashScreen = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            // Wait for 2 seconds (or the duration of the pulse animation)
+            setTimeout(() => {
+                // Add the fade-out class to the splash screen
+                splashScreen.classList.add('fade-out');
+                
+                // After the fade-out transition is complete, hide the splash screen and show the main content
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    mainContent.classList.remove('hidden');
+                    // Ensure the initial active section is visible
+                    document.getElementById('home').classList.add('active');
+                }, 1000); // This should match the CSS transition duration
+            }, 2000);
+        };
+
+        // Function to show/hide sections
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0, 0); // Scroll to top when changing sections
+        }
+
+        // Function to show/hide survey questions based on selection
+        function showQuestions(source) {
+            const questionSections = document.querySelectorAll('.source-questions');
+            questionSections.forEach(section => {
+                section.classList.add('hidden');
+            });
+            const selectedSection = document.getElementById(source + '-questions');
+            if (selectedSection) {
+                selectedSection.classList.remove('hidden');
+            }
+        }
+        
+        // Function to open Google Maps
+        function openMaps() {
+            const mapQuery = "food waste management industry near me";
+            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+            window.open(mapUrl, '_blank');
+        }
+
+        // Updated code to handle form submission
+        document.getElementById('survey-form-content').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevents the default form submission behavior
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = {};
+            
+            // Add common data
+            data['name_or_firm'] = formData.get('name_or_firm');
+            data['age'] = formData.get('age');
+            data['source_of_waste'] = formData.get('source_of_waste');
+
+            // Add specific data based on the source
+            const sourceOfWaste = data['source_of_waste'];
+            const specificQuestions = document.querySelectorAll(`#${sourceOfWaste}-questions input, #${sourceOfWaste}-questions select, #${sourceOfWaste}-questions textarea`);
+            specificQuestions.forEach(input => {
+                data[input.name] = input.value;
+            });
+
+            // Send data to the Flask backend
+            fetch('http://127.0.0.1:8000/submit-survey', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Survey submitted successfully! Thank you for your contribution.');
+                    form.reset(); // Clear the form
+                    showSection('home'); // Go back to the home page
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Could not connect to the server. Please try again later.');
+            });
+        });
+    </script>
+</body>
+</html>
