@@ -96,3 +96,21 @@ def submit_survey():
         print(f"General error: {e}")
         return jsonify({'success': False, 'message': f'An unexpected error occurred: {e}'}), 500
 
+
+# New route to view the data
+@app.route('/view-data', methods=['GET'])
+def view_data():
+    try:
+        conn = sqlite3.connect('app.db')
+        c = conn.cursor()
+        c.execute("SELECT * FROM survey_responses")
+        rows = c.fetchall()
+        conn.close()
+        return jsonify(rows)
+    except sqlite3.Error as e:
+        print(f"Database error during data retrieval: {e}")
+        return jsonify({'success': False, 'message': f'An error occurred: {e}'}), 500
+    except Exception as e:
+        print(f"General error: {e}")
+        return jsonify({'success': False, 'message': f'An unexpected error occurred: {e}'}), 500
+
